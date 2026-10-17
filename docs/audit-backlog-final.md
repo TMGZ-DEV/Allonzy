@@ -12,6 +12,7 @@ Le socle technique (§3.1 de l'audit initial : US00, authentification, base de d
 
 - Les 4 incohérences de dépendances et de critères sont corrigées.
 - 11 tâches et 1 user story ont été ajoutées (#53 à #64) pour couvrir les gestes manquants : modifier son profil, mes groupes, quitter un groupe, transférer l'administration, corriger une dépense, qui rembourse qui, remboursement effectué, cocher un élément, modifier une activité, notifications.
+- 1 tâche ajoutée ensuite (#66, T07.10) : réduire les photos sur le téléphone avant l'envoi, pour passer d'environ 2,8 Mo à environ 300 Ko par photo.
 - Les zones floues ont reçu une valeur par défaut écrite dans les critères d'acceptation : tailles, délais, formats, règles de calcul.
 - Les 76 dépendances sont maintenant des liens « bloqué par » natifs de GitHub, et chaque référence dans le texte pointe vers son issue.
 - Il reste à faire : le socle technique, le champ « Points » du board et le choix GitLab ou GitHub (voir « Ce qui reste »).
@@ -31,10 +32,10 @@ Le socle technique (§3.1 de l'audit initial : US00, authentification, base de d
 | Milestone | Avant | Après | Écart |
 |---|---|---|---|
 | Release 1 | 12 tâches, 37 pts | 18 tâches, 52 pts | +6 tâches : profil, mes groupes, quitter, transfert admin, corriger une dépense, remboursements |
-| Release 2 | 15 tâches, 41 pts | 19 tâches, 51 pts | +3 tâches, et le sondage T03.4 remonté de la Release 3 |
+| Release 2 | 15 tâches, 41 pts | 20 tâches, 54 pts | +4 tâches (dont la réduction des photos), et le sondage T03.4 remonté de la Release 3 |
 | Release 3 | 14 tâches, 48 pts | 12 tâches, 37 pts | +2 tâches de notifications, −T03.4, −3 tâches Won't |
 | Hors périmètre (nouveau) | – | 3 tâches, 11 pts | T05.3, T07.8, T07.9 (Won't) |
-| **Total** | 10 US, 41 tâches, 126 pts | 11 US, 52 tâches, 151 pts | |
+| **Total** | 10 US, 41 tâches, 126 pts | 11 US, 53 tâches, 154 pts | |
 
 **À savoir pour la planification.** Avec la vélocité de 10 pts par semaine donnée en exemple par la stack, la Release 1 fonctionnelle représente environ 5 sprints, auxquels s'ajouteront les quelque 25 pts du socle technique (audit initial, §3.1). Les 7 points ajoutés en Should dans la Release 1 (quitter un groupe, transfert admin, qui rembourse qui) sont les premiers à décaler si le temps manque.
 
@@ -84,6 +85,9 @@ Le socle technique (§3.1 de l'audit initial : US00, authentification, base de d
 | #53 | US11 - Notifications | Could | R3 | 5 |
 | #63 | T11.1 - Être notifié d'un nouveau message | Could | R3 | 3 |
 | #64 | T11.2 - Être notifié d'une nouvelle dépense | Could | R3 | 2 |
+| #66 | T07.10 - Réduire les photos avant l'envoi | Should | R2 | 3 |
+
+T07.10 a été ajoutée après coup, avec la décision d'auto-héberger les photos sur Garage. Le téléphone redimensionne chaque photo à 1600 px de large, la ré-encode en JPEG qualité 75 % et génère une miniature de 300 px pour les listes et la galerie (expo-image-manipulator). Une photo passe d'environ 2,8 Mo à environ 300 Ko, et sa miniature pèse environ 30 Ko. La même réduction sert à la galerie (T07.1) et à la messagerie (T03.5), et retire la localisation GPS des photos.
 
 Les US01, US02, US04, US06 et US08 ont été mises à jour (critères, tâches liées, points). T04.7 rend mesurable l'indicateur « dépenses soldées » du pitch : le groupe affiche « Comptes soldés » quand tous les soldes sont à zéro.
 
@@ -118,7 +122,7 @@ Des tâches techniques « écrire les tests » ont été ajoutées sur T02.2, T0
 | Labels d'état et labels par défaut | **Non fait.** À décider avec la configuration des colonnes du board |
 | Branche `develop` | **Non faite**, elle relève du socle technique |
 
-La correspondance code → numéro d'issue est à jour dans `backlog/github_issue_map.json` du dossier projet (US11 et tâches #53 à #64 incluses).
+La correspondance code → numéro d'issue est à jour dans `backlog/github_issue_map.json` du dossier projet (US11, tâches #53 à #64 et T07.10 #66 incluses).
 
 ## 7. Ce qui reste
 
