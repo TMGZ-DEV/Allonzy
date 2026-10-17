@@ -2,6 +2,8 @@
 
 Audit des 51 issues importées le 17/10/2026 depuis l'export GitLab (10 user stories, 41 tâches), comparées au livrable Sprint 0, au document de stack technique et au poster du pitch. L'audit propose des changements : aucune issue n'a été modifiée.
 
+Il complète l'audit de la stack et du stockage (`/mnt/project-files/audits/audit_stack_et_stockage.md` dans le dossier du projet), qui détaille le modèle de données, l'hébergement et le stockage des photos. Je n'ai pas refait cette analyse ici : les recommandations ci-dessous restent alignées sur lui et y renvoient quand c'est utile.
+
 ## En bref
 
 **Verdict : bon backlog, prêt pour l'affinage, pas encore prêt pour le Sprint 1.**
@@ -58,14 +60,15 @@ La stack technique décrit précisément ce qu'il faut monter, mais rien n'est d
 | Proposition | Pts | Pourquoi |
 |---|---|---|
 | T00.1 - Initialiser le monorepo `mobile/`, `api/`, `shared/` (Expo, Express, TypeScript strict, ESLint, Prettier) | 3 | Prérequis à tout le reste, décrit en 2.2 de la stack |
-| T00.2 - Base PostgreSQL avec Docker Compose et schéma Prisma initial | 2 | Toutes les US en dépendent |
+| T00.2 - Docker Compose (PostgreSQL + MinIO), schéma Prisma initial relu en équipe, seed de démo | 3 | Toutes les US en dépendent ; règles du schéma dans l'audit stack, §4 et §5 |
 | T00.3 - Pipeline CI (typage, lint, format, tests Jest avec base PostgreSQL) | 3 | Exigée par la DoD et par la stack (4.5) |
-| T00.4 - Inscription et connexion (JWT, bcrypt, expo-secure-store) | 5 | **Citée en dépendance par US01, US02 et T01.1, sans ticket** |
-| T00.5 - Contrôle d'accès « membre du groupe » côté API | 2 | Répété dans une dizaine de critères (« seuls les membres… ») ; mieux vaut le faire une fois |
+| T00.4 - Inscription, connexion et déconnexion (bcrypt, jeton court + jeton de rafraîchissement, expo-secure-store) | 5 | **Citée en dépendance par US01, US02 et T01.1, sans ticket.** Le jeton de rafraîchissement permet la déconnexion exigée par T01.2 (audit stack, §3.3) |
+| T00.5 - Contrôle d'accès « membre » et « admin » côté API, avec tests « non-membre = 403 » | 2 | Répété dans une dizaine de critères (« seuls les membres… ») ; mieux vaut le faire une fois (audit stack, §3.4) |
 | T00.6 - Serveur Socket.IO avec un salon par groupe | 3 | Dépendance technique de T03.1, utile aussi pour les mises à jour en direct |
-| T00.7 - Service de stockage des images (upload, formats, taille max) | 3 | Nécessaire dès T01.1 (photo de profil), réutilisé par T03.5 et T07.1 |
+| T00.7 - Stockage des images en stockage objet S3 (MinIO en dev), URL signées, taille max | 3 | Nécessaire dès T01.1 (photo de profil), réutilisé par T03.5 et T07.1. Le disque de l'API est déconseillé (audit stack, §3.2) |
+| T00.8 - Hébergement de l'API, de la base et du stockage, avec sauvegarde quotidienne | 3 | Nécessaire pour la recette sur téléphone et les tests avec de vrais groupes (audit stack, §2) |
 
-Ça fait environ **21 points**. Avec la vélocité de 10 pts par semaine prise en exemple dans la stack, la Release 1 passe d'environ 4 à environ 6 sprints. Il vaut mieux le savoir maintenant.
+Ça fait environ **25 points**. Avec la vélocité de 10 pts par semaine prise en exemple dans la stack, la Release 1 passe d'environ 4 à environ 6 sprints. Il vaut mieux le savoir maintenant.
 
 Alternative si vous ne voulez pas gonfler la Release 1 : basculer T00.6 dans T03.1 et T00.7 dans T07.1, et garder la photo de profil optionnelle en Release 1.
 
@@ -81,7 +84,9 @@ Alternative si vous ne voulez pas gonfler la Release 1 : basculer T00.6 dans T03
 | Voir qui rembourse qui (liste de virements simplifiée) | US04 | Should, R1 | US04 promet « qui doit combien à qui » ; T04.4 n'affiche qu'un solde par membre |
 | Marquer un remboursement comme effectué | US04 | Should, R2 | Nécessaire pour l'indicateur « dépenses soldées » du pitch |
 | Modifier une activité du calendrier | US08 | Could, R2 | Seuls l'ajout et le retrait existent |
-| Notifications (nouveau message, nouvelle dépense) | Nouvelle US | Could, R3 | Attendu sur une appli mobile de groupe, non prévu |
+| Cocher un élément de liste (fait / pas fait) | US06 | Should, R2 | Indispensable pour une liste de courses (audit stack, §4.6) |
+| Mot de passe oublié | US00 | Should, R2 | Demande un envoi d'e-mails (audit stack, §3.3) |
+| Notifications (nouveau message, nouvelle dépense) | Nouvelle US | Could, R2 ou R3 | Attendu sur une appli mobile de groupe, non prévu |
 
 ## 4. Incohérences à corriger
 
@@ -125,13 +130,14 @@ Les tâches sont globalement assez détaillées pour être prises en sprint : ch
 | Ticket | À préciser |
 |---|---|
 | T01.1 (#2) | Quels champs sont « informations de base » et lesquels sont obligatoires ? |
-| T02.1 (#8) | La destination est-elle un pays choisi dans une liste ? T01.4 (#5) en a besoin pour compter les pays |
-| T01.4, T01.5 (#5, #6) | Qu'est-ce qu'un voyage « terminé » ? Date de fin passée ou statut posé à la main ? |
+| T02.1 (#8) | La destination doit être un code pays ISO plus une ville en texte libre, sinon T01.4 (#5) compte « Portugal » et « Lisbonne » comme deux pays (audit stack, §4.3) |
+| T01.4, T01.5 (#5, #6) | Écrire qu'un voyage « terminé » est un groupe dont la date de fin est passée (calculé, pas un statut) |
 | T02.2 (#9) | Le lien d'invitation fonctionne-t-il pour quelqu'un qui n'a pas encore de compte ? Expire-t-il ? |
 | T03.1 (#13) | « En quelques secondes » : fixer une valeur testable (par exemple moins de 2 s) |
-| T03.5, T07.1 (#17, #33) | Taille maximale des photos, nombre de photos par envoi |
-| T04.1, T04.3 (#19, #21) | Une seule devise par groupe ? T04.3 parle de devise, T04.1 n'a pas de champ devise. Répartition autre qu'à parts égales prévue ou non ? |
-| T04.4 (#22) | Règle d'arrondi au centime (qui absorbe le centime restant ?) |
+| T03.5, T07.1 (#17, #33) | Taille maximale des photos (par exemple 10 Mo), nombre de photos par envoi, conversion des photos HEIC des iPhone en JPEG (audit stack, §3.2) |
+| T04.1, T04.3 (#19, #21) | T04.3 parle de devise, T04.1 n'a pas de champ devise : écrire « une devise par groupe, multi-devises hors périmètre ». Répartition autre qu'à parts égales prévue ou non ? |
+| T04.4 (#22) | Montants en centimes entiers et règle d'attribution du centime restant (10 € / 3 = 3,34 + 3,33 + 3,33), sinon « la somme des soldes est égale à zéro » ne tient pas (audit stack, §4.1) |
+| T02.3 (#10) | Le retrait est logique (date de départ sur le membre), sans supprimer la ligne, pour que ses dépenses restent dans les soldes (audit stack, §4.2) |
 | T09.3 (#48) | Granularité d'un créneau (jour, demi-journée) et durée minimale |
 
 Sur la qualité : seules T04.4 et T09.3 citent explicitement des tests unitaires. Comme la DoD et la stack (4.4) imposent des tests sur la logique métier et les endpoints critiques, la DoD suffit, mais l'ajouter en tâche technique sur T04.1, T02.2 et T02.3 (droits) éviterait les oublis.
@@ -170,7 +176,7 @@ Le générateur a écrit « afin de » devant une voyelle ou « que » sans éli
 
 Dans l'ordre, avant le Sprint 1 :
 
-1. Créer US00 et ses tâches de socle (3.1), en Must, Release 1.
+1. Choisir l'hébergement et le stockage des photos (audit stack, §7), puis créer US00 et ses tâches de socle (3.1), en Must, Release 1.
 2. Ajouter les tâches manquantes Must de la Release 1 (3.2) : consulter et modifier son profil, mes groupes, modifier ou supprimer une dépense.
 3. Corriger les incohérences de 4.1 et 4.2.
 4. Trancher les trois décisions de produit : US en épics ou critères par release (4.3), sondages dans le rendu ou non (section 2), GitLab ou GitHub comme référence (6.7).
