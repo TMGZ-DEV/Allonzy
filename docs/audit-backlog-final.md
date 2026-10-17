@@ -4,6 +4,8 @@ Bilan de l'affinage du 17/10/2026, mené dans le rôle de Product Owner à parti
 
 Le socle technique (§3.1 de l'audit initial : US00, authentification, base de données, CI, temps réel, hébergement, stockage des photos) est **volontairement hors de cet affinage**. Il sera traité avec le futur agent backend. Aucun code n'a été écrit.
 
+> **Changement depuis l'audit initial : Garage remplace MinIO** pour le stockage des photos (décision du 17/10/2026). L'audit initial cite MinIO dans T00.2 et T00.7 (§3.1) ; il est gardé tel quel comme trace historique. MinIO ne publie plus d'image Docker gratuite depuis fin 2025 et son projet open source est en maintenance. Garage parle aussi le protocole S3, donc les recommandations restent valables : stockage objet, URL signées, taille maximale. L'audit de la stack et du stockage a été mis à jour dans le même sens.
+
 ## En bref
 
 **Verdict : backlog fonctionnel prêt pour le Sprint 1, dès que le socle technique sera planifié.**
@@ -120,7 +122,7 @@ La correspondance code → numéro d'issue est à jour dans `backlog/github_issu
 
 ## 7. Ce qui reste
 
-1. **Socle technique** (US00, environ 25 pts, plus « mot de passe oublié » et le service de notifications push) : à planifier avec le futur agent backend, avant le Sprint 1.
+1. **Socle technique** (US00, environ 25 pts, plus « mot de passe oublié » et le service de notifications push), avec Garage comme stockage objet des photos : à planifier avec le futur agent backend, avant le Sprint 1.
 2. **GitLab ou GitHub comme référence** des tickets (audit initial, §6.7) : le backlog GitHub est désormais en avance sur le CSV GitLab et sur le livrable Sprint 0. Si le GitLab de l'IUT reste la référence pour l'équipe, il faudra y reporter ces changements.
 3. **Board** : ajouter les champs « Points » et « Itération », et décider du sort des labels « A faire » et « En cours ».
 4. **Livrable Sprint 0** : mettre à jour la DoR (règle des 8 points sur les tâches), la story map et les totaux par release si le document est rendu à nouveau.
