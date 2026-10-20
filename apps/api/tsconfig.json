@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // Node.js 22 : ES2023 est entièrement pris en charge.
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    // Résolution « bundler » : @allonzy/shared est consommé en sources TypeScript ;
+    // le lancement et la compilation de l'API (tsx, esbuild...) seront choisis par T13.1.
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "noEmit": true
+  },
+  "include": ["src"]
+}
