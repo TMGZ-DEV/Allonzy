@@ -1,0 +1,62 @@
+name: Vérifier les PR
+
+# Vérifie chaque PR vers develop avec les commandes du monorepo (voir .claude/definition-of-done.md).
+on:
+    pull_request:
+        branches: [develop]
+
+permissions:
+    contents: read
+
+concurrency:
+    group: verification-pr-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
+
+jobs:
+    verifier:
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        services:
+            postgres:
+                image: postgres:17
+                # Identifiants de test locaux au conteneur du workflow, jetés à la fin du job : ce ne sont pas des secrets.
+                env:
+                    POSTGRES_USER: allonzy
+                    POSTGRES_PASSWORD: allonzy
+                    POSTGRES_DB: allonzy_test
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd "pg_isready -U allonzy -d allonzy_test"
+                    --health-interval 5s
+                    --health-timeout 5s
+                    --health-retries 10
+        steps:
+            - uses: actions/checkout@v4
+
+            # Version de Node lue dans « engines » du package.json racine.
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: package.json
+                  cache: npm
+
+            - name: Installer les dépendances
+              run: npm ci
+
+            - name: Vérifier le formatage
+              run: npm run format:check
+
+            - name: Lint
+              run: npm run lint
+
+            - name: Typecheck
+              run: npm run typecheck
+
+            - name: Tests
+              run: npm test
+              env:
+                  DATABASE_URL: postgresql://allonzy:allonzy@localhost:5432/allonzy_test
+
+            # Seuil « critical » : les failles « high » actuelles viennent toutes de la chaîne Expo/Jest et ne se corrigent qu'en cassant Expo.
+            - name: Auditer les dépendances
+              run: npm audit --audit-level=critical
