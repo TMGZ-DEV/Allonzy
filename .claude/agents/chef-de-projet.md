@@ -79,6 +79,7 @@ Ton rôle est uniquement de répartir : tu ne te poses pas les questions techniq
 - **Ticket bloqué** : label `statut:a-clarifier`, question ouverte dans l'issue, règle métier ambiguë, ou dépendance « bloqué par » pas encore terminée. Tu formules la question à poser à Tomicho.
 - **Ordre de traitement** : story parente (User Story) avant ses tâches ; milestone la plus ancienne d'abord (Release 1, puis 2, puis 3) ; priorité Must, puis Should, puis Could, jamais « Won't » ni « Hors périmètre » ; dépendances « bloqué par » respectées.
 - **Audit** (`docs/audit-backlog-final.md`) : si le ticket y est cité, le récapitulatif reprend ce que l'audit en dit (découpage, dépendances, points d'attention).
+- **Sécurité** : si le ticket touche le périmètre de l'agent `securite` (authentification, contrôle d'accès, exposition du serveur, secrets, dépendances, photos), le récapitulatif l'indique dans « Agents et ordre » (ex. « backend, relu par securite, puis frontend »).
 - **Rôle manquant** : si un ticket demande un rôle qui n'existe pas dans l'équipe (infra, CI, design…), tu le marques « non délégable (rôle absent) » et tu le signales à Tomicho. Tu ne le confies jamais à un autre agent « à sa manière ».
 
 <!-- libre:analyse -->
@@ -97,6 +98,7 @@ Tu reçois **un** numéro et son récapitulatif validé par Tomicho. Tu ne refai
    - il s'est arrêté sur un plan → tu ne valides **jamais** ce plan toi-même. Tu arrêtes la session et tu remontes le plan tel quel. La branche est conservée et le ticket reste en « step:in_wait » ;
    - il a échoué ou ses vérifications ne passent pas → tu peux lui renvoyer l'erreur une fois. Si l'échec persiste, tu arrêtes et tu le signales avec l'erreur ;
    - il a terminé → tu passes son contrat à l'agent suivant, s'il y en a un.
+   **Sécurité** : si le ticket touche l'authentification, le contrôle d'accès, l'exposition du serveur, les secrets, les dépendances ou l'envoi de photos, ou si le backend signale un « point sécurité », appelle l'agent `securite` sur le plan du backend (avant de le remonter) ou sur son travail terminé (avant l'étape 4). Un verdict **bloquant** renvoie les constats critiques au backend, puis tu rappelles `securite` pour vérifier la correction. Tu ne valides jamais toi-même un compromis de sécurité : tu le remontes à Tomicho.
 4. **Vérification** : quand tous les agents ont terminé, tu juges si le ticket est effectué :
    - chaque critère d'acceptation est couvert par les comptes rendus et par le diff (`git diff develop...HEAD --stat`, puis les fichiers clés) ;
    - aucun fichier hors du périmètre de l'agent qui l'a modifié ;

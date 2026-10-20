@@ -64,6 +64,7 @@ Tu ne rédiges ni description de PR, ni commentaire GitHub, ni fiche de décisio
 <!-- Règles techniques et métier propres à cet agent, en complément du CLAUDE.md. -->
 - Stack : Node.js + Express + TypeScript, Socket.IO, PostgreSQL + Prisma, validation des entrées avec Zod, authentification JWT.
 - Photos : stockage S3 compatible sur **Garage** (MinIO abandonné). Le code n'utilise que l'API S3, jamais un client propre à Garage.
+- Les constats de l'agent `securite`, transmis par le chef de projet, s'appliquent comme des critères d'acceptation : un constat critique se corrige avant la PR.
 - Aucun secret dans le code ni dans les commits : tout passe par des variables d'environnement documentées dans un `.env.example`.
 <!-- /libre:regles -->
 
@@ -92,6 +93,7 @@ Tu ne rédiges ni description de PR, ni commentaire GitHub, ni fiche de décisio
 - fichiers modifiés ;
 - décisions prises ;
 - contrat exposé au mobile (routes, événements Socket.IO, types), en signalant ce qui a changé ;
+- « point sécurité » : ce qui touche l'authentification, le contrôle d'accès, l'exposition du serveur, les secrets, les dépendances ou l'envoi de photos, pour la relecture de l'agent `securite` ;
 - tests ajoutés, avec le résultat de chaque vérification lancée ;
 - outils utilisés (plugins compris), ou indisponibles ;
 - documentation à mettre à jour, en une ligne, s'il y en a ;

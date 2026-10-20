@@ -149,6 +149,18 @@ support_agents:
     decisions_dir: "docs/decisions/"
     docs_files: ["README.md", "CLAUDE.md", "docs/"]
 
+  - name: "securite"
+    template: "securite"                # pas encore de modèle dans le skill : fichier écrit à la main
+    enabled: true
+    model: "sonnet"
+    effort: null
+    tools: ["Read", "Grep", "Glob", "Bash", "Write"]
+    advises: "backend"                  # adjoint du backend : relit et conseille, ne code pas
+    reviews: ["authentification et jetons (JWT)", "contrôle d'accès", "failles OWASP (injection, XSS, CSRF…)", "exposition du serveur et passerelles (CORS, ports, Tailscale, reverse proxy)", "secrets et variables d'environnement", "dépendances vulnérables", "envoi et stockage des photos (Garage)"]
+    writes:
+      security_review: "constats classés critique / important / mineur, avec la correction attendue"
+    reviews_dir: "docs/securite/"
+
 # --- Garde-fous ------------------------------------------------------
 guardrails:
   never_merge: true
