@@ -1,0 +1,13 @@
+# Généré ou installé
+node_modules/
+package-lock.json
+dist/
+build/
+coverage/
+.expo/
+
+# Documentation et configuration de l'équipe d'agents : hors du formatage du code
+*.md
+docs/
+.claude/
+.github/

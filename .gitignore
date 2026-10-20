@@ -1,0 +1,29 @@
+# Dépendances
+node_modules/
+
+# Sorties de compilation et de test
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Expo / React Native (apps/mobile)
+.expo/
+web-build/
+expo-env.d.ts
+
+# Journaux
+npm-debug.log*
+*.log
+
+# Variables d'environnement : seul le modèle .env.example est versionné
+.env
+.env.*
+!.env.example
+
+# Systèmes et éditeurs
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
