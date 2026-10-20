@@ -22,7 +22,7 @@ Voir `.claude/definition-of-done.md`. Commandes de vérification : `npm install`
 
 <!-- Section générée par le skill equipe-agents-github depuis .claude/team.config.yml. -->
 
-- Le coordinateur (chat du projet) lit les annonces de la tâche « Tickets en attente : annonce dans le projet ». Il ouvre un fil neuf pour chaque récapitulatif, puis une session neuve sur le PC par ticket validé. Il ne code pas, ne fait pas lui-même les récapitulatifs et ne valide jamais seul un plan : il le présente tel quel à Tomicho, qui décide.
+- Le coordinateur (chat du projet) reçoit les numéros relayés par la tâche « Tickets en attente : annonce dans le projet » (qui vit dans son propre fil, à ne jamais résoudre). Il ouvre un fil neuf pour chaque récapitulatif, puis une session neuve sur le PC par ticket validé. Il ne code pas, ne fait pas lui-même les récapitulatifs et ne valide jamais seul un plan : il le présente tel quel à Tomicho, qui décide.
 - Agent `chef-de-projet` (`.claude/agents/chef-de-projet.md`), deux modes :
   - mode récapitulatif : il analyse les tickets annoncés de la colonne « step:in_wait » du board « Board Allonzy » et demande la validation ;
   - mode exécution : sur un seul ticket validé, il fait créer la branche par le rédacteur, délègue un agent à la fois, vérifie le travail, pousse, ouvre la PR et passe le ticket en « step:in_verif ».
