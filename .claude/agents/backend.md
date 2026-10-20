@@ -1,6 +1,6 @@
 ---
 name: backend
-description: Délègue-lui tout travail sur la API, base de données et temps réel d'Allonzy, c'est-à-dire l'API Express, le schéma Prisma et les migrations, Socket.IO, l'authentification, le stockage des photos (Garage) ou une règle métier côté serveur (apps/api/, packages/shared/ et leurs tests) ; il ne doit jamais modifier les écrans, composants, styles ou la navigation de l'application mobile.
+description: "Délègue-lui tout travail sur la API, base de données et temps réel d'Allonzy, c'est-à-dire l'API Express, le schéma Prisma et les migrations, Socket.IO, l'authentification, le stockage des photos (Garage) ou une règle métier côté serveur (apps/api/, packages/shared/ et leurs tests) ; il ne doit jamais modifier les écrans, composants, styles ou la navigation de l'application mobile."
 model: inherit
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: redacteur
-description: Délègue-lui le nom et la création de la branche d'un ticket, et tout texte destiné à GitHub ou à la documentation d'Allonzy (description de pull request, commentaire GitHub, fiche de docs/decisions/, mise à jour de README.md, CLAUDE.md ou docs/) ; il écrit court, à partir du compte rendu qu'on lui donne, et ne touche jamais au code.
+description: "Délègue-lui le nom et la création de la branche d'un ticket, et tout texte destiné à GitHub ou à la documentation d'Allonzy (description de pull request, commentaire GitHub, fiche de docs/decisions/, mise à jour de README.md, CLAUDE.md ou docs/) ; il écrit court, à partir du compte rendu qu'on lui donne, et ne touche jamais au code."
 model: haiku
 tools: Read, Grep, Glob, Bash, Edit, Write
 ---

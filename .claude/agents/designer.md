@@ -1,6 +1,6 @@
 ---
 name: designer
-description: Délègue-lui tout travail sur l'identité visuelle d'Allonzy, c'est-à-dire l'identité visuelle (palette, typographie, iconographie) et les maquettes basse fidélité des écrans (docs/design/) ; il ne doit jamais modifier du code, y compris les jetons du thème.
+description: "Délègue-lui tout travail sur l'identité visuelle d'Allonzy, c'est-à-dire l'identité visuelle (palette, typographie, iconographie) et les maquettes basse fidélité des écrans (docs/design/) ; il ne doit jamais modifier du code, y compris les jetons du thème."
 model: inherit
 ---
 
