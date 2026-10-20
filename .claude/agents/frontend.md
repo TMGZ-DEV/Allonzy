@@ -1,6 +1,6 @@
 ---
 name: frontend
-description: Délègue-lui tout travail sur la application mobile d'Allonzy, c'est-à-dire un écran, un composant, le thème, la navigation ou l'appel à l'API côté mobile (apps/mobile/ et ses tests) ; il ne doit jamais modifier l'API, le schéma de base ou packages/shared/ : décrire le besoin dans le compte rendu.
+description: "Délègue-lui tout travail sur la application mobile d'Allonzy, c'est-à-dire un écran, un composant, le thème, la navigation ou l'appel à l'API côté mobile (apps/mobile/ et ses tests) ; il ne doit jamais modifier l'API, le schéma de base ou packages/shared/ : décrire le besoin dans le compte rendu."
 model: inherit
 ---
 
