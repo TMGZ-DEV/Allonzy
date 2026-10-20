@@ -33,6 +33,7 @@ Le compte rendu de l'agent qui a fait le travail et le numéro du ticket. Tu peu
 <!-- libre:style -->
 <!-- Règles de rédaction propres au projet (vocabulaire, titres, format des fiches). -->
 - Ne jamais modifier `docs/audit-backlog.md` : c'est une trace historique.
+- Ne jamais modifier `docs/design/` : c'est le périmètre du designer.
 - Fiches de décision nommées `docs/decisions/AAAA-MM-JJ-sujet-en-clair.md`.
 <!-- /libre:style -->
 

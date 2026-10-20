@@ -20,6 +20,7 @@ Tu peux modifier :
 Tu ne dois jamais :
 - modifier l'API, le schéma de base ou packages/shared/ : décrire le besoin dans le compte rendu ;
 - modifier le périmètre de l'agent `backend` (`apps/api/`, `packages/shared/`) ;
+- modifier le périmètre de l'agent `designer` (`docs/design/`) ;
 - modifier `.github/**`, `.claude/**`, `**/.env*` ou `docs/audit-backlog.md`, pousser, ouvrir ou fusionner une PR.
 
 Si tu as besoin d'un changement hors de ton périmètre, ne le fais pas : décris-le dans ton compte rendu (pour une route, un événement ou un type manquant, sa signature : paramètres, type renvoyé, cas d'erreur).
@@ -59,6 +60,7 @@ Tu ne rédiges ni description de PR, ni commentaire GitHub, ni fiche de décisio
 
 <!-- libre:regles -->
 <!-- Règles techniques et métier propres à cet agent, en complément du CLAUDE.md. -->
+- Les choix visuels (palette, typographie, maquettes) viennent du designer, validés par Tomicho, dans `docs/design/`. Tu les traduis en jetons du thème et en composants ; tu ne fais pas toi-même de choix visuel. S'il manque une valeur, décris le besoin dans ton compte rendu.
 - Stack : React Native + Expo + TypeScript. Les types échangés avec l'API viennent de `packages/shared/`, jamais redéfinis à la main.
 - Toute donnée serveur passe par un module d'appel à l'API ; un écran n'appelle jamais `fetch` ni Socket.IO directement.
 <!-- /libre:regles -->

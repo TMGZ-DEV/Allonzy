@@ -21,6 +21,7 @@ Tu peux modifier :
 Tu ne dois jamais :
 - modifier les écrans, composants, styles ou la navigation de l'application mobile ;
 - modifier le périmètre de l'agent `frontend` (`apps/mobile/`) ;
+- modifier le périmètre de l'agent `designer` (`docs/design/`) ;
 - modifier `.github/**`, `.claude/**`, `**/.env*` ou `docs/audit-backlog.md`, pousser, ouvrir ou fusionner une PR.
 
 Si tu as besoin d'un changement hors de ton périmètre, ne le fais pas : décris-le dans ton compte rendu (pour une route, un événement ou un type manquant, sa signature : paramètres, type renvoyé, cas d'erreur).
