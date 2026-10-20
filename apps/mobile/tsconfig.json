@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  // Ordre imposé : la base Expo (cible, modules, JSX) puis la base commune (rigueur).
+  "extends": ["expo/tsconfig.base", "../../tsconfig.base.json"],
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
+}
