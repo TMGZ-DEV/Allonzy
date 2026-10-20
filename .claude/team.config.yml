@@ -1,0 +1,146 @@
+# =====================================================================
+# team.config.yml — équipe d'agents du projet Allonzy
+# =====================================================================
+# Généré depuis le skill « equipe-agents-github » (version 5).
+# Après toute modification, demander à Claude : « régénère l'équipe ».
+# Les valeurs marquées « À CONFIRMER » attendent la réponse de Tomicho.
+# =====================================================================
+
+version: 2
+
+# --- Le projet -------------------------------------------------------
+project:
+  name: "Allonzy"
+  summary: >
+    Application mobile d'organisation de voyages en groupe : profils, groupes,
+    dépenses partagées, calendrier commun et messagerie. Elle simplifie la
+    coordination entre les membres d'un même voyage.
+  stack: ["TypeScript", "React Native + Expo", "Node.js / Express", "Socket.IO", "PostgreSQL + Prisma", "Garage (S3)"]
+  context_file: "CLAUDE.md"
+  audit_file: "docs/audit-backlog-final.md"
+  impact_tool: null
+  manual_test: "Expo Go sur téléphone, API sur le serveur de développement (docs/infra/serveur-de-developpement.md)"
+
+# --- L'humain responsable --------------------------------------------
+human:
+  name: "Tomicho"
+
+# --- GitHub ----------------------------------------------------------
+github:
+  repo: "TMGZ-DEV/Allonzy"
+  base_branch: "develop"                # À CONFIRMER : n'existe pas encore (seule main existe)
+
+  board:
+    owner: "TMGZ-DEV"
+    number: 1                           # À CONFIRMER : numéro dans l'URL du board
+    title: "Board Allonzy"
+    status_field: "Status"              # À CONFIRMER
+
+  states:
+    input:
+      column: "À traiter"               # À CONFIRMER : nom exact de la colonne
+      label: "step:in_wait"
+    review:
+      column: "À vérifier"              # À CONFIRMER : nom exact de la colonne
+      label: "step:in_verif"
+
+  blocked_labels: ["statut:a-clarifier"]
+
+# Secrets GitHub du repo : BOARD_TOKEN, ROUTINE_URL, ROUTINE_TOKEN
+
+# --- Tâche d'annonce (phase 1) -----------------------------------------
+routine:
+  enabled: true
+  name: "Tickets en attente : annonce dans le projet"
+  announce: "Tickets arrivés dans {label} : {numeros}"
+
+# --- Sessions (phases 2 et 3) ----------------------------------------
+sessions:
+  recap_in_new_thread: true
+  one_session_per_ticket: true
+  coordinator: "le coordinateur du projet"
+
+# --- Commandes du projet (Definition of Done) ------------------------
+# Pas encore de code : à remplir quand le socle (monorepo) existera.
+commands:
+  install: null                         # ex. "npm ci"
+  typecheck: null                       # ex. "npm run typecheck"
+  lint: null                            # ex. "npm run lint"
+  test: null                            # ex. "npm test"
+  format_check: null
+  build: null
+
+# --- Plugins Claude Code ---------------------------------------------
+plugins: []
+
+# --- Conventions Git -------------------------------------------------
+conventions:
+  language: "fr"
+  branch: "{type}/{numero}-{titre-en-clair}"
+  branch_types: ["feat", "fix", "docs", "chore"]
+  pr_closes_issue: true
+
+# --- Chef de projet (orchestrateur) ----------------------------------
+orchestrator:
+  name: "chef-de-projet"
+  model: "sonnet"
+  effort: null
+  ordering:
+    - "story parente (User Story) avant ses tâches"
+    - "milestone la plus ancienne d'abord (Release 1, puis 2, puis 3)"
+    - "priorité : Must, puis Should, puis Could ; jamais « Won't » ni « Hors périmètre »"
+    - "dépendances « bloqué par » respectées"
+  parent_story_hint: "tâche rattachée à son US par un lien de sous-issue (épic)"
+  not_delegated: ["documentation de rendu universitaire", "recette", "livraison"]
+
+# --- Spécialistes ----------------------------------------------------
+# Arborescence proposée (monorepo) : apps/api (Express + Prisma) et
+# apps/mobile (Expo). À CONFIRMER : elle sera créée par le premier ticket socle.
+specialists:
+  - name: "backend"
+    summary: "API, base de données et temps réel"
+    handles: "l'API Express, le schéma Prisma et les migrations, Socket.IO, l'authentification, le stockage des photos (Garage) ou une règle métier côté serveur"
+    scope:
+      - "apps/api/"
+      - "packages/shared/ (types et contrats partagés)"
+      - "tests de cette couche"
+    forbidden:
+      - "modifier les écrans, composants, styles ou la navigation de l'application mobile"
+    plan_required_for: ["changement de schéma de base (migration Prisma)", "changement d'un contrat d'API déjà utilisé par le mobile"]
+    report_extra: ["contrat exposé au mobile (routes, événements Socket.IO, types), en signalant ce qui a changé"]
+    model: "inherit"
+
+  - name: "frontend"
+    summary: "application mobile"
+    handles: "un écran, un composant, le thème, la navigation ou l'appel à l'API côté mobile"
+    scope:
+      - "apps/mobile/"
+      - "tests de cette couche"
+    forbidden:
+      - "modifier l'API, le schéma de base ou packages/shared/ : décrire le besoin dans le compte rendu"
+    plan_required_for: ["changement de navigation", "changement des jetons du thème"]
+    report_extra: ["routes ou événements manquants pour backend (signature souhaitée)", "scénario de test manuel sur Expo Go"]
+    model: "inherit"
+
+handoff_order: ["backend", "frontend"]
+
+# --- Agents de soutien -----------------------------------------------
+support_agents:
+  - name: "redacteur"
+    template: "redacteur"
+    enabled: true
+    model: "haiku"
+    effort: null
+    tools: ["Read", "Grep", "Glob", "Bash", "Edit", "Write"]
+    writes:
+      pr_description: "1 à 3 phrases + vérifications + points ouverts + Closes"
+      github_comment: "3 lignes"
+      decision_record: "15 lignes"
+    decisions_dir: "docs/decisions/"
+    docs_files: ["README.md", "CLAUDE.md", "docs/"]
+
+# --- Garde-fous ------------------------------------------------------
+guardrails:
+  never_merge: true
+  never_push_base_branch: true
+  protected_paths: [".github/**", ".claude/**", "**/.env*", "docs/audit-backlog.md"]
