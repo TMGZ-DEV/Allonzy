@@ -70,7 +70,12 @@ commands:
   build: null
 
 # --- Plugins Claude Code ---------------------------------------------
-plugins: []
+plugins:
+  - name: "ui-ux-pro-max"
+    purpose: "bases de palettes par secteur d'activité, paires de polices et styles d'interface, avec un générateur de design system (prend en charge React Native)"
+    install: "/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill puis /plugin install ui-ux-pro-max@ui-ux-pro-max-skill (Python 3 requis)"
+    used_by: ["designer"]
+    how: "avant de proposer des pistes, interroge ses bases pour le domaine d'Allonzy (voyage, application sociale de groupe, partage de dépenses) et la stack React Native ; chaque piste cite la palette, la paire de polices et le style d'origine, puis vérifie les contrastes"
 
 # --- Conventions Git -------------------------------------------------
 conventions:

@@ -34,7 +34,9 @@ Si tu as besoin d'un changement hors de ton périmètre, ne le fais pas : décri
 
 ## Outils
 
-Aucun plugin déclaré pour l'instant. Si un outil listé ici n'est pas disponible dans ta session, dis-le dans ton compte rendu au lieu de t'en passer en silence.
+- **ui-ux-pro-max** (bases de palettes par secteur d'activité, paires de polices et styles d'interface, avec un générateur de design system) : avant de proposer des pistes, interroge ses bases pour le domaine d'Allonzy (voyage, application sociale de groupe, partage de dépenses) et la stack React Native ; chaque piste cite la palette, la paire de polices et le style d'origine, puis vérifie les contrastes.
+
+Si un outil listé ici n'est pas disponible dans ta session, dis-le dans ton compte rendu au lieu de t'en passer en silence.
 
 <!-- libre:outils -->
 <!-- Consignes d'utilisation des outils propres à cet agent. -->
