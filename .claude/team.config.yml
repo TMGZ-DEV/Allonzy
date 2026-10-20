@@ -3,7 +3,6 @@
 # =====================================================================
 # Généré depuis le skill « equipe-agents-github » (version 5).
 # Après toute modification, demander à Claude : « régénère l'équipe ».
-# Les valeurs marquées « À CONFIRMER » attendent la réponse de Tomicho.
 # =====================================================================
 
 version: 2
@@ -28,20 +27,20 @@ human:
 # --- GitHub ----------------------------------------------------------
 github:
   repo: "TMGZ-DEV/Allonzy"
-  base_branch: "develop"                # À CONFIRMER : n'existe pas encore (seule main existe)
+  base_branch: "develop"                # branche par défaut ; main reçoit les versions finales
 
   board:
     owner: "TMGZ-DEV"
-    number: 1                           # À CONFIRMER : numéro dans l'URL du board
+    number: 1
     title: "Board Allonzy"
-    status_field: "Status"              # À CONFIRMER
+    status_field: "Status"
 
   states:
     input:
-      column: "À traiter"               # À CONFIRMER : nom exact de la colonne
+      column: "step:in_wait"
       label: "step:in_wait"
     review:
-      column: "À vérifier"              # À CONFIRMER : nom exact de la colonne
+      column: "step:in_verif"
       label: "step:in_verif"
 
   blocked_labels: ["statut:a-clarifier"]
@@ -95,7 +94,7 @@ orchestrator:
 
 # --- Spécialistes ----------------------------------------------------
 # Arborescence proposée (monorepo) : apps/api (Express + Prisma) et
-# apps/mobile (Expo). À CONFIRMER : elle sera créée par le premier ticket socle.
+# apps/mobile (Expo), validée par Tomicho le 2026-10-20. Créée par le premier ticket socle.
 specialists:
   - name: "backend"
     summary: "API, base de données et temps réel"

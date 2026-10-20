@@ -1,0 +1,98 @@
+name: Synchroniser les labels avec le board
+
+# Fichier généré par le skill equipe-agents-github depuis .claude/team.config.yml.
+# Lancement à la main uniquement : onglet Actions du dépôt, puis « Run workflow ».
+# Le workflow recopie la colonne de chaque ticket du board « Board Allonzy » dans un
+# label miroir (step:in_wait ou step:in_verif), puis appelle la tâche
+# d'annonce du projet si un ticket vient d'arriver dans step:in_wait.
+# Secrets : BOARD_TOKEN, ROUTINE_URL, ROUTINE_TOKEN.
+on:
+    workflow_dispatch:
+
+permissions:
+    contents: read
+    issues: write
+
+concurrency:
+    group: synchro-labels-board
+    cancel-in-progress: false
+
+jobs:
+    synchroniser:
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Lire les colonnes du board
+              id: board
+              uses: actions/github-script@v7
+              env:
+                  BOARD_PROPRIETAIRE: TMGZ-DEV
+                  BOARD_NUMERO: '1'
+                  BOARD_CHAMP: Status
+              with:
+                  # Jeton personnel : le jeton automatique du workflow ne lit pas les GitHub Projects.
+                  github-token: ${{ secrets.BOARD_TOKEN }}
+                  script: |
+                      const { lireBoard } = require('./.github/scripts/synchro-labels-board.js');
+                      await lireBoard({ github, context, core });
+
+            - name: Copier les colonnes du board dans les labels
+              id: synchro
+              uses: actions/github-script@v7
+              env:
+                  COLONNES: ${{ steps.board.outputs.colonnes }}
+                  # Colonne suivie → label miroir. Ajouter une ligne pour suivre une autre colonne.
+                  ETATS: |
+                      {
+                        "step:in_wait": "step:in_wait",
+                        "step:in_verif": "step:in_verif"
+                      }
+                  LABEL_ENTREE: step:in_wait
+              with:
+                  script: |
+                      const { appliquerLabels } = require('./.github/scripts/synchro-labels-board.js');
+                      await appliquerLabels({ github, context, core });
+
+            # Étape à supprimer si routine.enabled = false.
+            # Appelle la tâche « Tickets en attente : annonce dans le projet », rattachée au projet Claude (jamais à un fil).
+            # En cas d'échec, retire le label d'entrée des tickets non annoncés : ils seront
+            # de nouveau des « arrivées » au lancement suivant, au lieu d'être perdus.
+            - name: Prévenir le coordinateur
+              if: steps.synchro.outputs.nouveaux_en_attente != ''
+              env:
+                  ROUTINE_URL: ${{ secrets.ROUTINE_URL }}
+                  ROUTINE_TOKEN: ${{ secrets.ROUTINE_TOKEN }}
+                  NOUVEAUX: ${{ steps.synchro.outputs.nouveaux_en_attente }}
+                  LABEL_ENTREE: step:in_wait
+                  GH_TOKEN: ${{ github.token }}
+              run: |
+                  annuler() {
+                      echo "::error::$1"
+                      for n in $(echo "$NOUVEAUX" | grep -o '[0-9]\+'); do
+                          gh issue edit "$n" --repo "$GITHUB_REPOSITORY" --remove-label "$LABEL_ENTREE" >/dev/null \
+                              || echo "::warning::Label $LABEL_ENTREE non retiré de #$n : le retirer à la main pour qu'il soit annoncé."
+                      done
+                      echo "Tickets non annoncés : $NOUVEAUX. Label $LABEL_ENTREE retiré : ils seront annoncés au prochain lancement."
+                      exit 1
+                  }
+                  if [ -z "$ROUTINE_URL" ] || [ -z "$ROUTINE_TOKEN" ]; then
+                      annuler "Secret ROUTINE_URL ou ROUTINE_TOKEN absent : coordinateur non prévenu."
+                  fi
+                  corps=$(jq -n --arg texte "Tickets arrivés dans $LABEL_ENTREE : $NOUVEAUX" '{text: $texte}')
+                  code=$(curl --silent --show-error --output reponse.json --write-out '%{http_code}' \
+                      -X POST "$ROUTINE_URL" \
+                      -H "Authorization: Bearer $ROUTINE_TOKEN" \
+                      -H "anthropic-beta: experimental-cc-routine-2026-04-01" \
+                      -H "anthropic-version: 2023-06-01" \
+                      -H "Content-Type: application/json" \
+                      -d "$corps") || code=000
+                  if [ "${code#2}" = "$code" ]; then
+                      echo "Réponse ($code) :"; cat reponse.json 2>/dev/null; echo
+                      if grep -q thread_resolved reponse.json 2>/dev/null; then
+                          annuler "La tâche est liée à un fil résolu (HTTP $code). Utiliser une tâche rattachée au projet : voir reference/routine-setup.md."
+                      fi
+                      annuler "Échec de l'annonce (HTTP $code)."
+                  fi
+                  echo "Annonce envoyée : $NOUVEAUX"
