@@ -71,6 +71,11 @@ commands:
 
 # --- Plugins Claude Code ---------------------------------------------
 plugins:
+  - name: "ponytail"
+    purpose: "écrire seulement le code nécessaire, avec un test sur la logique risquée"
+    install: "/plugin marketplace add DietrichGebert/ponytail puis /plugin install ponytail@ponytail (actif par défaut dans toutes les sessions ; /ponytail off pour le couper)"
+    used_by: ["backend", "frontend"]
+    how: "avant d'écrire du code, applique son échelle (le code existe-t-il déjà ? la bibliothèque standard, Expo ou une dépendance installée le couvrent-ils ?) en mode `full` ; n'enlève jamais la validation, la gestion d'erreurs ni la sécurité ; avant de rendre ton travail, lance `/ponytail-review` sur tes modifications et corrige ce qui relève de ton périmètre"
   - name: "ui-ux-pro-max"
     purpose: "bases de palettes par secteur d'activité, paires de polices et styles d'interface, avec un générateur de design system (prend en charge React Native)"
     install: "/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill puis /plugin install ui-ux-pro-max@ui-ux-pro-max-skill (Python 3 requis)"

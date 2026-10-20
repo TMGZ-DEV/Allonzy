@@ -36,7 +36,9 @@ Si tu as besoin d'un changement hors de ton périmètre, ne le fais pas : décri
 
 ## Outils
 
-Aucun plugin déclaré pour l'instant. Si un outil listé ici n'est pas disponible dans ta session, dis-le dans ton compte rendu au lieu de t'en passer en silence.
+- **ponytail** (écrire seulement le code nécessaire, avec un test sur la logique risquée) : avant d'écrire du code, applique son échelle (le code existe-t-il déjà ? la bibliothèque standard, Expo ou une dépendance installée le couvrent-ils ?) en mode `full` ; n'enlève jamais la validation, la gestion d'erreurs ni la sécurité ; avant de rendre ton travail, lance `/ponytail-review` sur tes modifications et corrige ce qui relève de ton périmètre. Les raccourcis assumés sont marqués `shortcut:` en commentaire et signalés dans ton compte rendu.
+
+Si un outil listé ici n'est pas disponible dans ta session, dis-le dans ton compte rendu au lieu de t'en passer en silence.
 
 <!-- libre:outils -->
 <!-- Consignes d'utilisation des outils propres à cet agent. -->
