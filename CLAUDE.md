@@ -3,7 +3,7 @@
 Application mobile d'organisation de voyages en groupe : profils, groupes, dépenses partagées, calendrier commun et messagerie.
 
 - Stack : React Native + Expo + TypeScript (mobile), Node.js + Express + Socket.IO (API), PostgreSQL + Prisma, stockage photos S3 sur Garage.
-- Arborescence (monorepo) : `apps/api/`, `apps/mobile/`, `packages/shared/`. Pas encore de code : le premier ticket socle la crée.
+- Arborescence (monorepo, workspaces npm) : `apps/api/`, `apps/mobile/`, `packages/shared/`.
 - Backlog : issues GitHub (US en épics, tâches en sous-issues, milestones Release 1/2/3 et « Hors périmètre »). Audit : `docs/audit-backlog-final.md`.
 - Serveur de développement : `docs/infra/serveur-de-developpement.md`.
 - Langue : français pour le code commenté, les commits, les PR et la documentation.
@@ -16,7 +16,7 @@ Application mobile d'organisation de voyages en groupe : profils, groupes, dépe
 
 ## Definition of Done
 
-Voir `.claude/definition-of-done.md`. Commandes de vérification : aucune pour l'instant, à compléter quand le socle existera (install, typecheck, lint, test).
+Voir `.claude/definition-of-done.md`. Commandes de vérification : `npm install` (ou `npm ci`), puis `npm run check` (format:check, lint, typecheck, test).
 
 ## Agents
 
