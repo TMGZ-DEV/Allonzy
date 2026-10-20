@@ -70,7 +70,12 @@ commands:
   build: null
 
 # --- Plugins Claude Code ---------------------------------------------
-plugins: []
+plugins:
+  - name: "ui-ux-pro-max"
+    purpose: "bases de palettes par secteur d'activité, paires de polices et styles d'interface, avec un générateur de design system (prend en charge React Native)"
+    install: "/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill puis /plugin install ui-ux-pro-max@ui-ux-pro-max-skill (Python 3 requis)"
+    used_by: ["designer"]
+    how: "avant de proposer des pistes, interroge ses bases pour le domaine d'Allonzy (voyage, application sociale de groupe, partage de dépenses) et la stack React Native ; chaque piste cite la palette, la paire de polices et le style d'origine, puis vérifie les contrastes"
 
 # --- Conventions Git -------------------------------------------------
 conventions:
@@ -121,7 +126,18 @@ specialists:
     report_extra: ["routes ou événements manquants pour backend (signature souhaitée)", "scénario de test manuel sur Expo Go"]
     model: "inherit"
 
-handoff_order: ["backend", "frontend"]
+  - name: "designer"
+    summary: "identité visuelle"
+    handles: "l'identité visuelle (palette, typographie, iconographie) et les maquettes basse fidélité des écrans"
+    scope:
+      - "docs/design/ (pistes, palette, typographie, maquettes basse fidélité en Markdown, SVG ou images)"
+    forbidden:
+      - "modifier du code, y compris les jetons du thème : le frontend les traduit à partir de ses choix validés"
+    plan_required_for: ["choix d'identité visuelle (palette, typographie, style des maquettes) : il propose 2 ou 3 pistes et Tomicho choisit"]
+    report_extra: ["valeurs à reporter dans les jetons du thème par frontend (couleurs, tailles, espacements)", "pistes proposées et piste retenue"]
+    model: "inherit"
+
+handoff_order: ["designer", "backend", "frontend"]
 
 # --- Agents de soutien -----------------------------------------------
 support_agents:
@@ -137,6 +153,18 @@ support_agents:
       decision_record: "15 lignes"
     decisions_dir: "docs/decisions/"
     docs_files: ["README.md", "CLAUDE.md", "docs/"]
+
+  - name: "securite"
+    template: "securite"                # pas encore de modèle dans le skill : fichier écrit à la main
+    enabled: true
+    model: "sonnet"
+    effort: null
+    tools: ["Read", "Grep", "Glob", "Bash", "Write"]
+    advises: "backend"                  # adjoint du backend : relit et conseille, ne code pas
+    reviews: ["authentification et jetons (JWT)", "contrôle d'accès", "failles OWASP (injection, XSS, CSRF…)", "exposition du serveur et passerelles (CORS, ports, Tailscale, reverse proxy)", "secrets et variables d'environnement", "dépendances vulnérables", "envoi et stockage des photos (Garage)"]
+    writes:
+      security_review: "constats classés critique / important / mineur, avec la correction attendue"
+    reviews_dir: "docs/securite/"
 
 # --- Garde-fous ------------------------------------------------------
 guardrails:
