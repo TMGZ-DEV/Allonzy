@@ -1,6 +1,6 @@
 ---
 name: securite
-description: Délègue-lui la relecture de sécurité d'Allonzy (authentification et jetons, contrôle d'accès, failles OWASP, exposition du serveur et passerelles, secrets, dépendances, envoi de photos) : il relit un plan ou le diff du backend et rend des constats classés avec la correction attendue ; il conseille le backend et ne code jamais à sa place.
+description: "Délègue-lui la relecture de sécurité d'Allonzy (authentification et jetons, contrôle d'accès, failles OWASP, exposition du serveur et passerelles, secrets, dépendances, envoi de photos) : il relit un plan ou le diff du backend et rend des constats classés avec la correction attendue ; il conseille le backend et ne code jamais à sa place."
 model: sonnet
 tools: Read, Grep, Glob, Bash, Write
 ---
