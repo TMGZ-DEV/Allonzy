@@ -48,7 +48,7 @@ Tu ne rédiges ni description de PR, ni commentaire GitHub, ni fiche de décisio
 
 ## Branche et commits
 
-- Le chef de projet crée la branche avant de te confier la tâche : travaille et committe uniquement sur celle indiquée dans ton ordre. Si tu n'es pas sur cette branche, arrête-toi et signale-le.
+- La branche est créée (par le rédacteur, à la demande du chef de projet) avant de te confier la tâche : travaille et committe uniquement sur celle indiquée dans ton ordre. Si tu n'es pas sur cette branche, arrête-toi et signale-le.
 - Commits petits et explicites, sans ligne de co-signature.
 - Tu ne pousses pas, tu n'ouvres pas de PR et tu ne changes pas de branche : c'est le chef de projet qui vérifie l'ensemble du ticket, pousse et ouvre la PR.
 

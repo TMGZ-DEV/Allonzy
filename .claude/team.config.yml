@@ -80,7 +80,8 @@ plugins:
 # --- Conventions Git -------------------------------------------------
 conventions:
   language: "fr"
-  branch: "{type}/{numero}-{titre-en-clair}"
+  branch: "{type}/{numero}-{sujet}"   # sujet : 2 à 4 mots, minuscules, sans accents, tirets ; 40 caractères max
+  branch_owner: "redacteur"           # l'agent qui nomme et crée la branche (à la demande du chef de projet)
   branch_types: ["feat", "fix", "docs", "chore"]
   pr_closes_issue: true
 
